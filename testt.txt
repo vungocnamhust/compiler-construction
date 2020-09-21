@@ -1,0 +1,4 @@
+Program Example1; (* Examsdffffffffffffffple 1 *)
+Begin
+var a:= 8
+End. (* Example 1 *)
