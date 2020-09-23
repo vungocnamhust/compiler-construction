@@ -20,7 +20,8 @@ extern int currentChar;
 extern CharCode charCodes[];
 
 typedef struct {
-  Token token;
+  char letter[15];
+  int linesCo;
   int lines[100];
 } TokenTrack;
 TokenTrack tokenTracks[500];
@@ -116,7 +117,7 @@ Token *readNumber(void)
   while (charCodes[currentChar] == CHAR_DIGIT)
   {
     readChar();
-    key[count] == currentChar;
+    key[count] = currentChar;
     count++;
   }
   key[count] = '\0';
@@ -308,8 +309,44 @@ Token *getToken(void)
 
 /******************************************************************/
 
+void trackToken(Token *token) {
+  int isDup = isDuplicateToken(token);
+    // printf("%s %d\n", token->string, countToken);
+
+  if (isDup == -1) {
+    strcpy(tokenTracks[countToken].letter, token->string);
+    tokenTracks[countToken].linesCo = 0;
+    tokenTracks[countToken].lines[0] = lineNo;
+    countToken++;
+  } else {
+    tokenTracks[isDup].linesCo++;
+    tokenTracks[isDup].lines[tokenTracks[countToken].linesCo] = lineNo;
+  }
+  // printf("%s %d %d\n", tokenTracks[3].letter, token->lineNo, token->colNo);
+}
+
+void printTokenTrack() {
+
+  for (int i = 0 ; i<countToken; i++) {
+    for (int j = 0; j<tokenTracks[i].linesCo; j++) {
+      printf("%d, ", tokenTracks[i].lines[j]);
+    }
+    printf("%s\n", tokenTracks[i].letter);
+  }
+}
+
+int isDuplicateToken(Token *token) {
+  int isDuplicate = -1;
+  for (int i = 0; i<countToken; i++) {
+    if (!strcmp(token->string, tokenTracks[i].letter)) {
+      return i;
+    }
+  }
+  return isDuplicate;
+}
+
 void printLetter(Token *token) {
-  if (!isDuplicate(token)) {
+  if (isDuplicate(token) == 0) {
     tokens[countToken] = *token;
     countToken++;
     printf("%d - %d: ", token->lineNo, token->colNo);
@@ -319,7 +356,7 @@ void printLetter(Token *token) {
   }
 
 }
-
+// ------------------------------------------------------------------
 int isDuplicate(Token *token) {
   int isDuplicate = 0;
   for (int i = 0; i<countToken; i++) {
@@ -485,10 +522,13 @@ int scan(char *fileName)
   while (token->tokenType != TK_EOF)
   {
     // printToken(token);
-    printLetter(token);
+    // printLetter(token);
+    trackToken(token);
     free(token);
     token = getToken();
+     
   }
+  printTokenTrack();
 
   free(token);
   closeInputStream();
