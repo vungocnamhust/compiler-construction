@@ -11,8 +11,23 @@ FILE *inputStream;
 int lineNo, colNo;
 int currentChar;
 
+void toLowerCase(char *str)
+{
+  for (int i = 0; i <= strlen(str); i++)
+  {
+    if (str[i] >= 65 && str[i] <= 90)
+      str[i] = str[i] + 32;
+  }
+}
+
+void toLowerCaseLetter() {
+        if (currentChar >= 65 && currentChar <= 90)
+      currentChar = currentChar + 32;
+}
+
 int readChar(void) {
   currentChar = getc(inputStream);
+
   colNo ++;
   if (currentChar == '\n') {
     lineNo ++;

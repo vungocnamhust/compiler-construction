@@ -23,7 +23,7 @@ typedef struct
 {
   char letter[15];
   int linesCo;
-  int lines[10];
+  int lines[100];
   int apperanceCo;
 } TokenTrack;
 TokenTrack tokenTracks[300];
@@ -39,12 +39,15 @@ int isAvoidWord(Token *token)
 
   while (i < strlen(avoid))
   {
-    char word[5];
-    while (strcmp(&avoid[i], ' '))
+    char word[5] = "";
+    printf("%c", avoid[i]);
+    while (avoid[i] != ' ')
     {
-      strncat(word, &avoid[i], 1);
+      char x = avoid[i];
+      strncat(word, &x, 1);
       i++;
     }
+    // printf("%c - %s\n", word, token->string);
     if (!strcmp(word, token->string)) return 1;
     i++;
   }
@@ -327,6 +330,18 @@ Token *getToken(void)
   }
 }
 
+void sortTokenTrack() {
+  for (int i = 0 ; i<countToken; i++) {
+    for (int j = 0; j<i; j++) {
+      if (strcmp(tokenTracks[i].letter , tokenTracks[j].letter) < 0) {
+        TokenTrack tmp = tokenTracks[i] ;
+        tokenTracks[i] = tokenTracks[j];
+        tokenTracks[j] = tmp;
+      }
+    }
+  }
+}
+
 /******************************************************************/
 
 void trackToken(Token *token)
@@ -580,6 +595,7 @@ int scan(char *fileName)
     free(token);
     token = getToken();
   }
+  sortTokenTrack();
   printTokenTrack();
 
   free(token);
