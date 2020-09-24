@@ -25,6 +25,8 @@ typedef struct
   int linesCo;
   int lines[100];
   int apperanceCo;
+  // int colNo;
+  int cols[100];
 } TokenTrack;
 TokenTrack tokenTracks[300];
 
@@ -33,22 +35,23 @@ int countToken = 0;
 char avoid[100] = "a an and at of he him i in it me my she the they you your";
 /***************************************************************/
 
-int isAvoidWord(Token *token)
+int isAvoidWord(char* letter)
 {
   int i = 0;
 
   while (i < strlen(avoid))
   {
-    char word[5] = "";
-    printf("%c", avoid[i]);
-    while (avoid[i] != ' ')
-    {
-      char x = avoid[i];
-      strncat(word, &x, 1);
+    char* word ;
+    word = (char*) malloc (sizeof(char));
+    while (i < strlen(avoid) && avoid[i] != ' ') {
+      strncat(word, &avoid[i], 1);
       i++;
     }
-    // printf("%c - %s\n", word, token->string);
-    if (!strcmp(word, token->string)) return 1;
+
+    if (!strcmp(word, letter)) {
+      // printf("avoid: %s\n", word);
+      return 1;
+    }
     i++;
   }
   return 0;
@@ -346,7 +349,6 @@ void sortTokenTrack() {
 
 void trackToken(Token *token)
 {
-  // if (isAvoidWord(token)) return;
   int isDup = isDuplicateToken(token);
   // if (!strcmp(token->string, "gathering"))
   // {
@@ -359,7 +361,8 @@ void trackToken(Token *token)
     tokenTracks[countToken].linesCo = 1;
     tokenTracks[countToken].lines[0] = token->lineNo;
     tokenTracks[countToken].apperanceCo = 1;
-
+    // tokenTracks[countToken].colNo = 1 ;
+    tokenTracks[countToken].cols[0] = token->colNo;
     countToken++;
   }
   else if (isDup < countToken)
@@ -378,6 +381,8 @@ void trackToken(Token *token)
     {
       tokenTracks[isDup].linesCo++;
       tokenTracks[isDup].lines[tokenTracks[isDup].linesCo - 1] = token->lineNo;
+      // tokenTracks[isDup].colNo++;
+      tokenTracks[isDup].cols[tokenTracks[isDup].linesCo - 1] = token->colNo;
     }
   }
 }
@@ -386,10 +391,11 @@ void printTokenTrack()
 {
   for (int i = 0; i < countToken; i++)
   {
+      if (isAvoidWord(tokenTracks[i].letter)) continue;
     printf("%s: %d - ", tokenTracks[i].letter, tokenTracks[i].apperanceCo);
     for (int j = 0; j < tokenTracks[i].linesCo; j++)
     {
-      printf("%d, ", tokenTracks[i].lines[j]);
+      printf("( %d, %d ) ", tokenTracks[i].lines[j], tokenTracks[i].cols[j]);
     }
     printf("\n");
   }

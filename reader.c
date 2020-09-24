@@ -21,13 +21,13 @@ void toLowerCase(char *str)
 }
 
 void toLowerCaseLetter() {
-        if (currentChar >= 65 && currentChar <= 90)
+      if (currentChar >= 65 && currentChar <= 90)
       currentChar = currentChar + 32;
 }
 
 int readChar(void) {
   currentChar = getc(inputStream);
-
+  toLowerCaseLetter();
   colNo ++;
   if (currentChar == '\n') {
     lineNo ++;
