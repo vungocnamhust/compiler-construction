@@ -19,16 +19,17 @@ extern int currentChar;
 
 extern CharCode charCodes[];
 
-typedef struct {
+typedef struct
+{
   char letter[15];
   int linesCo;
   int lines[100];
+  int apperanceCo;
 } TokenTrack;
 TokenTrack tokenTracks[500];
 
-Token tokens[500]; 
+Token tokens[500];
 int countToken = 0;
-
 
 /***************************************************************/
 
@@ -142,7 +143,8 @@ Token *readConstChar(void)
       error(ERR_INVALIDCHARCONSTANT, ln, cn);
       break;
     }
-    if(charCodes[currentChar] == CHAR_SINGLEQUOTE) break;
+    if (charCodes[currentChar] == CHAR_SINGLEQUOTE)
+      break;
     key[count] = currentChar;
     count++;
   } while (charCodes[currentChar] != CHAR_SINGLEQUOTE);
@@ -309,58 +311,90 @@ Token *getToken(void)
 
 /******************************************************************/
 
-void trackToken(Token *token) {
+void trackToken(Token *token)
+{
   int isDup = isDuplicateToken(token);
-    // printf("%s %d\n", token->string, countToken);
-
-  if (isDup == -1) {
-    strcpy(tokenTracks[countToken].letter, token->string);
-    tokenTracks[countToken].linesCo = 0;
-    tokenTracks[countToken].lines[0] = lineNo;
-    countToken++;
-  } else {
-    tokenTracks[isDup].linesCo++;
-    tokenTracks[isDup].lines[tokenTracks[countToken].linesCo] = lineNo;
+  if (!strcmp(token->string, "gathering"))
+  {
+    printf("____%s %d %d %d\n", token->string, isDup, token->lineNo, token->colNo);
   }
-  // printf("%s %d %d\n", tokenTracks[3].letter, token->lineNo, token->colNo);
+
+  if (isDup == -1)
+  {
+    strcpy(tokenTracks[countToken].letter, token->string);
+    tokenTracks[countToken].linesCo = 1;
+    tokenTracks[countToken].lines[0] = token->lineNo;
+    tokenTracks[countToken].apperanceCo = 1;
+
+    countToken++;
+  }
+  else if (isDup < countToken)
+  {
+    tokenTracks[isDup].apperanceCo++;
+    int isDuplicateLine = -1;
+    for (int i = 0; i < tokenTracks[isDup].linesCo; i++)
+    {
+      if (token->lineNo == tokenTracks[isDup].lines[i])
+      {
+        isDuplicateLine = 0;
+        break;
+      }
+    }
+    if (isDuplicateLine == -1)
+    {
+      tokenTracks[isDup].linesCo++;
+      tokenTracks[isDup].lines[tokenTracks[isDup].linesCo - 1] = token->lineNo;
+    }
+  }
 }
 
-void printTokenTrack() {
-
-  for (int i = 0 ; i<countToken; i++) {
-    for (int j = 0; j<tokenTracks[i].linesCo; j++) {
+void printTokenTrack()
+{
+  for (int i = 0; i < countToken; i++)
+  {
+    printf("%s: %d - ", tokenTracks[i].letter, tokenTracks[i].apperanceCo);
+    for (int j = 0; j < tokenTracks[i].linesCo; j++)
+    {
       printf("%d, ", tokenTracks[i].lines[j]);
     }
-    printf("%s\n", tokenTracks[i].letter);
+    printf("\n");
   }
 }
 
-int isDuplicateToken(Token *token) {
+int isDuplicateToken(Token *token)
+{
   int isDuplicate = -1;
-  for (int i = 0; i<countToken; i++) {
-    if (!strcmp(token->string, tokenTracks[i].letter)) {
+  for (int i = 0; i < countToken; i++)
+  {
+    if (!strcmp(token->string, tokenTracks[i].letter))
+    {
       return i;
     }
   }
   return isDuplicate;
 }
 
-void printLetter(Token *token) {
-  if (isDuplicate(token) == 0) {
+void printLetter(Token *token)
+{
+  if (isDuplicate(token) == 0)
+  {
     tokens[countToken] = *token;
     countToken++;
     printf("%d - %d: ", token->lineNo, token->colNo);
     printf("%s\n", token->string);
-  } else {
-    
   }
-
+  else
+  {
+  }
 }
 // ------------------------------------------------------------------
-int isDuplicate(Token *token) {
+int isDuplicate(Token *token)
+{
   int isDuplicate = 0;
-  for (int i = 0; i<countToken; i++) {
-    if (!strcmp(token->string, tokens[i].string)) {
+  for (int i = 0; i < countToken; i++)
+  {
+    if (!strcmp(token->string, tokens[i].string))
+    {
       return 1;
     }
   }
@@ -526,7 +560,6 @@ int scan(char *fileName)
     trackToken(token);
     free(token);
     token = getToken();
-     
   }
   printTokenTrack();
 
