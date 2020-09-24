@@ -23,15 +23,33 @@ typedef struct
 {
   char letter[15];
   int linesCo;
-  int lines[100];
+  int lines[10];
   int apperanceCo;
 } TokenTrack;
-TokenTrack tokenTracks[500];
+TokenTrack tokenTracks[300];
 
-Token tokens[500];
+Token tokens[300];
 int countToken = 0;
-
+char avoid[100] = "a an and at of he him i in it me my she the they you your";
 /***************************************************************/
+
+int isAvoidWord(Token *token)
+{
+  int i = 0;
+
+  while (i < strlen(avoid))
+  {
+    char word[5];
+    while (strcmp(&avoid[i], ' '))
+    {
+      strncat(word, &avoid[i], 1);
+      i++;
+    }
+    if (!strcmp(word, token->string)) return 1;
+    i++;
+  }
+  return 0;
+}
 
 void skipBlank()
 {
@@ -313,11 +331,12 @@ Token *getToken(void)
 
 void trackToken(Token *token)
 {
+  // if (isAvoidWord(token)) return;
   int isDup = isDuplicateToken(token);
-  if (!strcmp(token->string, "gathering"))
-  {
-    printf("____%s %d %d %d\n", token->string, isDup, token->lineNo, token->colNo);
-  }
+  // if (!strcmp(token->string, "gathering"))
+  // {
+  //   printf("____%s %d %d %d\n", token->string, isDup, token->lineNo, token->colNo);
+  // }
 
   if (isDup == -1)
   {
