@@ -361,7 +361,6 @@ void trackToken(Token *token)
     tokenTracks[countToken].linesCo = 1;
     tokenTracks[countToken].lines[0] = token->lineNo;
     tokenTracks[countToken].apperanceCo = 1;
-    // tokenTracks[countToken].colNo = 1 ;
     tokenTracks[countToken].cols[0] = token->colNo;
     countToken++;
   }
@@ -381,7 +380,6 @@ void trackToken(Token *token)
     {
       tokenTracks[isDup].linesCo++;
       tokenTracks[isDup].lines[tokenTracks[isDup].linesCo - 1] = token->lineNo;
-      // tokenTracks[isDup].colNo++;
       tokenTracks[isDup].cols[tokenTracks[isDup].linesCo - 1] = token->colNo;
     }
   }
