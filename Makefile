@@ -2,16 +2,25 @@ CFLAGS = -c -Wall
 CC = gcc
 LIBS =  -lm 
 
-all: scanner
+all: parser
+
+parser: main.o parser.o scanner.o reader.o charcode.o token.o error.o
+	${CC} main.o parser.o scanner.o reader.o charcode.o token.o error.o -o parser
 
 scanner: scanner.o reader.o charcode.o token.o error.o
 	${CC} scanner.o reader.o charcode.o token.o error.o -o scanner
 
-reader.o: reader.c
-	${CC} ${CFLAGS} reader.c
+main.o: main.c
+	${CC} ${CFLAGS} main.c
 
 scanner.o: scanner.c
 	${CC} ${CFLAGS} scanner.c
+
+parser.o: parser.c
+	${CC} ${CFLAGS} parser.c
+
+reader.o: reader.c
+	${CC} ${CFLAGS} reader.c
 
 charcode.o: charcode.c
 	${CC} ${CFLAGS} charcode.c
