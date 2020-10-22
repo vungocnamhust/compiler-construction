@@ -441,9 +441,6 @@ int isDuplicate(Token *token)
 
 void printToken(Token *token)
 {
-
-  printf("line: %d- col: %d  \n", token->lineNo, token->colNo);
-
   switch (token->tokenType)
   {
   case TK_NONE:
@@ -593,15 +590,10 @@ int scan(char *fileName)
   token = getToken();
   while (token->tokenType != TK_EOF)
   {
-    // printToken(token);
-    // printLetter(token);
-    trackToken(token);
+    printToken(token);
     free(token);
     token = getToken();
   }
-  sortTokenTrack();
-  printTokenTrack();
-
   free(token);
   closeInputStream();
   return IO_SUCCESS;
