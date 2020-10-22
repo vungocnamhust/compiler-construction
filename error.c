@@ -22,7 +22,57 @@ void error(ErrorCode err, int lineNo, int colNo) {
   case ERR_INVALIDSYMBOL:
     printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDSYMBOL);
     break;
+  case ERR_INVALIDCONSTANT:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDCONSTANT);
+    break;
+  case ERR_INVALIDTYPE:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDTYPE);
+    break;
+  case ERR_INVALIDBASICTYPE:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDBASICTYPE);
+    break;
+  case ERR_INVALIDPARAM:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDPARAM);
+    break;
+  case ERR_INVALIDSTATEMENT:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDSTATEMENT);
+    break;
+  case ERR_INVALIDARGUMENTS:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDARGUMENTS);
+    break;
+  case ERR_INVALIDCOMPARATOR:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDCOMPARATOR);
+    break;
+  case ERR_INVALIDEXPRESSION:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDEXPRESSION);
+    break;
+  case ERR_INVALIDTERM:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDTERM);
+    break;
+  case ERR_INVALIDFACTOR:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDFACTOR);
+    break;
+  case ERR_INVALIDCONSTDECL:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDCONSTDECL);
+    break;
+  case ERR_INVALIDTYPEDECL:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDTYPEDECL);
+    break;
+  case ERR_INVALIDVARDECL:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDVARDECL);
+    break;
+  case ERR_INVALIDSUBDECL:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDSUBDECL);
+    break;
   }
-  exit(-1);
+  exit(0);
 }
 
+void missingToken(TokenType tokenType, int lineNo, int colNo) {
+  printf("%d-%d:Missing %s\n", lineNo, colNo, tokenToString(tokenType));
+  exit(0);
+}
+
+void assert(char *msg) {
+  printf("%s\n", msg);
+}
