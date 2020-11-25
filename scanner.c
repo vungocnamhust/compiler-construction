@@ -220,10 +220,17 @@ Token *getToken(void)
 	}
 	case CHAR_PLUS:
 	{
+		ln = lineNo;
+		cn = colNo;
 		token = makeToken(SB_PLUS, lineNo, colNo);
 		readChar();
+		if ((currentChar != EOF) && (charCodes[currentChar] == CHAR_EQ))
+		{
+			readChar();
+			return makeToken(SB_ASSIGN_PLUS, ln, cn);
+		}
 		return token;
-	}	
+	}
 	case CHAR_MOD:
 	{
 		token = makeToken(SB_MOD, lineNo, colNo);
@@ -232,20 +239,41 @@ Token *getToken(void)
 	}
 	case CHAR_MINUS:
 	{
+		ln = lineNo;
+		cn = colNo;
 		token = makeToken(SB_MINUS, lineNo, colNo);
 		readChar();
+		if ((currentChar != EOF) && (charCodes[currentChar] == CHAR_EQ))
+		{
+			readChar();
+			return makeToken(SB_ASSIGN_MINUS, ln, cn);
+		}
 		return token;
 	}
 	case CHAR_TIMES:
 	{
+		ln = lineNo;
+		cn = colNo;
 		token = makeToken(SB_TIMES, lineNo, colNo);
 		readChar();
+		if ((currentChar != EOF) && (charCodes[currentChar] == CHAR_EQ))
+		{
+			readChar();
+			return makeToken(SB_ASSIGN_TIMES, ln, cn);
+		}
 		return token;
 	}
 	case CHAR_SLASH:
 	{
+		ln = lineNo;
+		cn = colNo;
 		token = makeToken(SB_SLASH, lineNo, colNo);
 		readChar();
+		if ((currentChar != EOF) && (charCodes[currentChar] == CHAR_EQ))
+		{
+			readChar();
+			return makeToken(SB_ASSIGN_SLASH, ln, cn);
+		}
 		return token;
 	}
 	case CHAR_DOUBLEQUOTE:
@@ -526,6 +554,22 @@ void printToken(Token *token)
 	case SB_ASSIGN:
 		printf("SB_ASSIGN\n");
 		break;
+	case SB_ASSIGN_MINUS:
+		printf("SB_ASSIGN_MINUS\n");
+		break;
+
+	case SB_ASSIGN_PLUS:
+		printf("SB_ASSIGN_PLUS\n");
+		break;
+
+	case SB_ASSIGN_SLASH:
+		printf("SB_ASSIGN_SLASH\n");
+		break;
+
+	case SB_ASSIGN_TIMES:
+		printf("SB_ASSIGN_TIMES\n");
+		break;
+
 	case SB_EQ:
 		printf("SB_EQ\n");
 		break;

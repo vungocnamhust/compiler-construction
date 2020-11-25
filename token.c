@@ -138,6 +138,15 @@ char *tokenToString(TokenType tokenType)
 		return "\',\'";
 	case SB_ASSIGN:
 		return "\':=\'";
+	case SB_ASSIGN_TIMES:
+		return "\'*=\'";
+	case SB_ASSIGN_PLUS:
+		return "\'+=\'";
+	case SB_ASSIGN_SLASH:
+		return "\'/=\'";
+	case SB_ASSIGN_MINUS:
+		return "\'-=\'";
+		
 	case SB_EQ:
 		return "\'=\'";
 	case SB_NEQ:

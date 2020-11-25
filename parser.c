@@ -464,7 +464,27 @@ void compileAssignSt(void)
   {
     compileIndexes();
   }
-  eat(SB_ASSIGN);
+
+  switch (lookAhead->tokenType)
+  {
+  case SB_ASSIGN_SLASH:
+    eat(SB_ASSIGN_SLASH);
+    break;
+  case SB_ASSIGN_MINUS:
+    eat(SB_ASSIGN_MINUS);
+    break;
+  case SB_ASSIGN_PLUS:
+    eat(SB_ASSIGN_PLUS);
+    break;
+  case SB_ASSIGN_TIMES:
+    eat(SB_ASSIGN_TIMES);
+    break;
+  
+  default:
+    eat(SB_ASSIGN);
+    break;
+  }
+
   compileExpression();
   assert("Assign statement parsed ....");
 }
@@ -639,7 +659,7 @@ void compileCondition2(void)
   }
 }
 
-// check a % b,1, 3.14, expression 
+// check a % b,1, 3.14, expression
 void compileExpression(void)
 {
   assert("Parsing an expression");
@@ -663,7 +683,7 @@ void compileExpression(void)
 void compileExpression2(void)
 {
   // TODO
-  // Khong biet ky tu gi --> term 
+  // Khong biet ky tu gi --> term
   assert("compile expression 2");
   compileTerm();
   compileExpression3();
