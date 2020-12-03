@@ -32,8 +32,8 @@ BEGIN
     I := 1;
     WHILE I <= N DO
      BEGIN
-       S := S + A(.I.);
-       I := I + 1;
+       S += S + A(.I.);
+       I -= 1;
      END
 END;
 
