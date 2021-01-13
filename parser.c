@@ -396,7 +396,7 @@ Type* compileType(void) {
   case KW_ARRAY:
     eat(KW_ARRAY);
     eat(SB_LSEL);
-    
+    // Nếu kí tự sau dấu . là float thì báo lỗi 
     if(lookAhead->tokenType == TK_FLOAT)
     {
       error(ERR_INDEX_FLOAT_ERROR, currentToken->lineNo, currentToken->colNo);
@@ -462,7 +462,7 @@ void compileParam(void) {
   Object* param;
   Type* type;
   enum ParamKind paramKind;
-
+// Nếu mà gặp luôn ident thì nó chỉ là param value nếu mà gặp var thì nó là reference 
   switch (lookAhead->tokenType) {
   case TK_IDENT:
     paramKind = PARAM_VALUE;
@@ -516,10 +516,12 @@ void compileStatements(void)
 }
 
 int compileStatement_f(void) {
+  // Nếu mà count = 0 thì function chưa được return, =1 được return rồi
   int count = 0;
   switch (lookAhead->tokenType) {
 
   case TK_IDENT:
+  //  Kiểm tra tên của function và biến hiện tại (lookAhead) có giống nhau ko
     if(strcmp(lookAhead->string, symtab->currentScope->owner->name) == 0)
     {
       count = 1;
@@ -612,7 +614,9 @@ Type* compileLValue(void) {
 
 void compileAssignSt(void) {
   // TODO: parse the assignment and check type consistency
+  // Là kiểu bên trái dấu assign 
   Type* lvalueType;
+  //  Là kiểu của giá trị bên phải có thể là expression 
   Type* expType;
   lvalueType = compileLValue();
   switch(lookAhead->tokenType){
@@ -634,6 +638,7 @@ void compileAssignSt(void) {
     default:
       break;
   }
+  // 
   expType = compileExpression();
 
   checkTypeEquality(lvalueType, expType);
@@ -690,6 +695,7 @@ void compileForSt(void) {
 
   // check if the identifier is a variable
   Object* var = checkDeclaredVariable(currentToken->string);
+  //  kiểm tra nó có phải là integer không 
   checkBasicType(var->varAttrs->type);
 
   eat(SB_ASSIGN);
@@ -700,8 +706,9 @@ void compileForSt(void) {
   Type* exp2Type = compileExpression();
   checkBasicType(exp2Type);
   
-
+// Kiểm tra giá trị có cùng kiểu với biến không 
   checkTypeEquality(var->varAttrs->type, exp1Type);
+  // Kiểm tra giá trị thứ 2 có cùng kiểu với biến ko 
   checkTypeEquality(exp1Type, exp2Type);
 
   eat(KW_DO);
@@ -787,6 +794,7 @@ void compileArguments(ObjectNode* paramList) {
 
 void compileCondition(void) {
   // TODO: check the type consistency of LHS and RSH, check the basic type
+  // Giống assignSt 
   Type* exp1Type = compileExpression();
   checkBasicType(exp1Type);
 
@@ -901,6 +909,8 @@ Type* compileExpression3(void) {
 
 Type* compileTerm(void) {
   // TODO: check type of Term2
+  // a+b
+  // kí tự sau a cố phải % hay không, nếu nó khác int thì báo lỗi 
   Type* type;
    
   type = compileFactor();
@@ -911,6 +921,7 @@ Type* compileTerm(void) {
       error(ERR_MOD_INT, lookAhead->lineNo, lookAhead->colNo);
     }
   }
+  // check xem b có phải int không
   compileTerm2();
 
   return type;
@@ -918,6 +929,7 @@ Type* compileTerm(void) {
 
 void compileTerm2(void) {
   // TODO: check type of term2
+  // +-*/ factor
   Type* type;
 
   switch (lookAhead->tokenType) {
