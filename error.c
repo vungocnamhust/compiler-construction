@@ -8,16 +8,20 @@
 #include <stdlib.h>
 #include "error.h"
 
-#define NUM_OF_ERRORS 29
+#define NUM_OF_ERRORS 33
 
 struct ErrorMessage {
   ErrorCode errorCode;
   char *message;
 };
 
-struct ErrorMessage errors[29] = {
+struct ErrorMessage errors[33] = {
+  {ERR_MOD_INT, "Modulus operator requires integer value."},
+  {ERR_FUNCTION_RETURN, "There must be at least one assignment LValue to the same function."},
   {ERR_END_OF_COMMENT, "End of comment expected."},
+  {ERR_NUMBER_TOO_LONG, "Number too long."},
   {ERR_IDENT_TOO_LONG, "Identifier too long."},
+  {ERR_INDEX_FLOAT_ERROR, "Index cannot be float type"},
   {ERR_INVALID_CONSTANT_CHAR, "Invalid char constant."},
   {ERR_INVALID_SYMBOL, "Invalid symbol."},
   {ERR_INVALID_IDENT, "An identifier expected."},

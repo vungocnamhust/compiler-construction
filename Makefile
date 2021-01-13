@@ -2,13 +2,10 @@ CFLAGS = -c -Wall
 CC = gcc
 LIBS =  -lm 
 
-all: parser
+all: kplc
 
-parser: main.o parser.o scanner.o reader.o charcode.o token.o error.o
-	${CC} main.o parser.o scanner.o reader.o charcode.o token.o error.o -o parser
-
-scanner: scanner.o reader.o charcode.o token.o error.o
-	${CC} scanner.o reader.o charcode.o token.o error.o -o scanner
+kplc: main.o parser.o scanner.o reader.o charcode.o token.o error.o symtab.o semantics.o debug.o
+	${CC} main.o parser.o scanner.o reader.o charcode.o token.o error.o symtab.o semantics.o debug.o -o kplc
 
 main.o: main.c
 	${CC} ${CFLAGS} main.c
@@ -30,6 +27,15 @@ token.o: token.c
 
 error.o: error.c
 	${CC} ${CFLAGS} error.c
+
+symtab.o: symtab.c
+	${CC} ${CFLAGS} symtab.c
+
+semantics.o: semantics.c
+	${CC} ${CFLAGS} semantics.c
+
+debug.o: debug.c
+	${CC} ${CFLAGS} debug.c
 
 clean:
 	rm -f *.o *~

@@ -7,12 +7,10 @@
 #ifndef __CHARCODE_H__
 #define __CHARCODE_H__
 
-typedef enum
-{
+typedef enum {
   CHAR_SPACE,
   CHAR_LETTER,
   CHAR_DIGIT,
-  CHAR_MOD,
   CHAR_PLUS,
   CHAR_MINUS,
   CHAR_TIMES,
@@ -28,6 +26,7 @@ typedef enum
   CHAR_SINGLEQUOTE,
   CHAR_LPAR,
   CHAR_RPAR,
+  CHAR_PERCENT,
   CHAR_UNKNOWN
 } CharCode;
 
