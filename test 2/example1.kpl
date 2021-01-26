@@ -1,0 +1,15 @@
+Program Example1; (* Example 1 *)
+Const p = 3.1416;
+Type t = Array(. 100 .) of float;
+Var f:float;
+Function ham(x: float) : float;
+Begin
+
+End;
+Begin
+    s -= a * b +;
+    s += 2;
+    s *= 10;
+    S := s % 10;
+    S /= 10;
+End. (* Example 1 *)
